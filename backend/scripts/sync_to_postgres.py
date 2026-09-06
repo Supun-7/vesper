@@ -86,21 +86,22 @@ def sync_transactions(conn, odoo):
         orders = odoo.fetch_sale_orders()
         count = 0
         for order in orders:
+            partner_id = order["partner_id"][0] if isinstance(order["partner_id"], list) else order["partner_id"]
             for line in order.get("lines", []):
+                product_id = line["product_id"][0] if isinstance(line["product_id"], list) else line["product_id"]
                 record = {
                     "order_id": order["id"],
                     "order_name": order["name"],
-                    "partner_id": order["partner_id"],
+                    "partner_id": partner_id,
                     "date_order": order["date_order"],
-                    "product_id": line["product_id"],
+                    "product_id": product_id,
                     "product_uom_qty": line["product_uom_qty"],
                     "price_unit": line["price_unit"],
                     "state": order["state"],
                 }
-                messy = rename_and_mess(record, {})  # transactions kept as-is, just blanked occasionally
                 conn.execute(
                     text("INSERT INTO raw_sale_orders (odoo_id, raw_json) VALUES (:oid, :raw)"),
-                    {"oid": order["id"], "raw": json.dumps(messy)},
+                    {"oid": order["id"], "raw": json.dumps(record)},
                 )
                 count += 1
         log_sync(conn, "sale_orders", count, "success")
