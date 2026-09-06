@@ -1,0 +1,43 @@
+services:
+  odoo-db:
+    image: postgres:15
+    container_name: believe_odoo_db
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
+    volumes:
+      - odoo_db_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  odoo:
+    image: odoo:17
+    container_name: believe_odoo
+    depends_on:
+      - odoo-db
+    environment:
+      HOST: odoo-db
+      USER: odoo
+      PASSWORD: odoo
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo_data:/var/lib/odoo
+
+  app-db:
+    image: postgres:15
+    container_name: believe_app_db
+    environment:
+      POSTGRES_USER: believe
+      POSTGRES_PASSWORD: believe
+      POSTGRES_DB: believe
+    volumes:
+      - app_db_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+
+volumes:
+  odoo_db_data:
+  odoo_data:
+  app_db_data:
