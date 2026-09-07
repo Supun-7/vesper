@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from app.agents.query_agent import answer_question
+from app.agents.forecasting_agent import forecast_question
 
 app = FastAPI(title="Vesper API", description="AI layer for legacy ERP systems")
 
@@ -33,3 +34,8 @@ def health():
 @app.post("/ask")
 def ask(request: AskRequest):
     return answer_question(request.question)
+
+
+@app.post("/forecast")
+def forecast(request: AskRequest):
+    return forecast_question(request.question)
