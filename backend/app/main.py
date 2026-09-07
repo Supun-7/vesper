@@ -10,6 +10,7 @@ from pydantic import BaseModel
 
 from app.agents.query_agent import answer_question
 from app.agents.forecasting_agent import forecast_question
+from app.agents.orchestrator import route_question
 
 app = FastAPI(title="Vesper API", description="AI layer for legacy ERP systems")
 
@@ -33,9 +34,11 @@ def health():
 
 @app.post("/ask")
 def ask(request: AskRequest):
-    return answer_question(request.question)
+    """Single entry point — the orchestrator decides which agent handles this."""
+    return route_question(request.question)
 
 
 @app.post("/forecast")
 def forecast(request: AskRequest):
+    """Direct access to the Forecasting Agent, bypassing the orchestrator (for testing)."""
     return forecast_question(request.question)
