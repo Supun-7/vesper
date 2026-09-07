@@ -63,10 +63,23 @@ def log_sync(conn, entity, row_count, status, error=None):
     )
 
 
+def synthetic_stock_for_product(product_id):
+    """Deterministic pseudo-random stock level per product, so re-running sync
+    gives consistent (but varied) numbers without depending on Odoo's real
+    stock engine — reservations/moves/storable-type rules make that genuinely
+    heavy machinery to fight for a demo dataset."""
+    rng = random.Random(product_id * 7919)  # fixed seed per product, reproducible
+    if rng.random() < 0.3:
+        return rng.randint(0, 15)  # deliberately low, to trigger low-stock queries
+    return rng.randint(20, 200)
+
+
 def sync_entity(conn, odoo_fetch_fn, field_map, table_name, entity_name):
     try:
         records = odoo_fetch_fn()
         for record in records:
+            if entity_name == "products":
+                record["qty_available"] = synthetic_stock_for_product(record["id"])
             messy = rename_and_mess(record, field_map)
             conn.execute(
                 text(f"INSERT INTO {table_name} (odoo_id, raw_json) VALUES (:oid, :raw)"),

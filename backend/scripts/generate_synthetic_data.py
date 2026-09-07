@@ -64,6 +64,7 @@ def create_products(odoo):
             "default_code": sku,
             "list_price": price,
             "type": "consu",
+            "is_storable": True,
         })
         products.append({"id": product_id, "sku": sku, "pattern": pattern, "name": name, "price": price})
         print(f"  product: {sku} ({pattern}) -> id={product_id}")
