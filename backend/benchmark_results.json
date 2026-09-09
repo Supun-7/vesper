@@ -1,0 +1,58 @@
+[
+  {
+    "question": "which products are low on stock?",
+    "routed_to": "query",
+    "answer": "Based on the provided data, the products listed as low on stock include Staff Box (ID: 28, SKU: DEC-028) with 0 units on hand, as well as Would Pack (ID: 22, SKU: GRO-022), Method Box (ID: 29, SKU: STE-029), and A Set (ID: 15, SKU: SEA-015) with only 1 unit remaining each. Additionally, Thought Box (ID: 2, SKU: GRO-002) has 6 units, Him Pack (ID: 25, SKU: STE-025) has 8 units, Feeling Pack (ID: 7, SKU: SEA-007) has 10 units, and Century Box (ID: 20, SKU: DEC-020) has 14 units remaining.",
+    "source_record_count": 8,
+    "response_time_seconds": 6.21
+  },
+  {
+    "question": "what are the top 5 selling products?",
+    "routed_to": "query",
+    "answer": "(Answer generation is temporarily rate-limited. Here's the raw data instead: product_id: 27, product_name: Yet Box, sku: SEA-027, total_units_sold: 360.0, total_revenue: 337993.20\nproduct_id: 15, product_name: A Set, sku: SEA-015, total_units_sold: 299.0, total_revenue: 185101.930000000008\nproduct_id: 9, product_name: Kid Box, sku: STE-009, total_units_sold: 290.0, total_revenue: 1181964.59999999998\nproduct_id: 21, product_name: Out Box, sku: STE-021, total_units_sold: 282.0, total_revenue: 831945.11999999995\nproduct_id: 14, product_name: Size Box, sku: GRO-014, total_units_sold: 253.0, total_revenue: 163367.160000000014)",
+    "source_record_count": 5,
+    "response_time_seconds": 15.77
+  },
+  {
+    "question": "what are the best selling products this month?",
+    "routed_to": "query",
+    "answer": "(Answer generation is temporarily rate-limited. Here's the raw data instead: product_id: 27, product_name: Yet Box, sku: SEA-027, total_units_sold: 360.0, total_revenue: 337993.20\nproduct_id: 15, product_name: A Set, sku: SEA-015, total_units_sold: 299.0, total_revenue: 185101.930000000008\nproduct_id: 9, product_name: Kid Box, sku: STE-009, total_units_sold: 290.0, total_revenue: 1181964.59999999998\nproduct_id: 21, product_name: Out Box, sku: STE-021, total_units_sold: 282.0, total_revenue: 831945.11999999995\nproduct_id: 14, product_name: Size Box, sku: GRO-014, total_units_sold: 253.0, total_revenue: 163367.160000000014)",
+    "source_record_count": 5,
+    "response_time_seconds": 15.88
+  },
+  {
+    "question": "forecast demand for SEA-027 next month",
+    "routed_to": "forecasting",
+    "answer": "Based on the last 1 month(s) of sales data for Yet Box (SEA-027), the moving-average forecast for next month is approximately 360 units.",
+    "source_record_count": 1,
+    "response_time_seconds": 0.01
+  },
+  {
+    "question": "predict next month's demand for GRO-002",
+    "routed_to": "forecasting",
+    "answer": "Based on the last 1 month(s) of sales data for Thought Box (GRO-002), the moving-average forecast for next month is approximately 240 units.",
+    "source_record_count": 1,
+    "response_time_seconds": 0.0
+  },
+  {
+    "question": "which items need restocking?",
+    "routed_to": "query",
+    "answer": "(Answer generation is temporarily rate-limited. Here's the raw data instead: product_id: 28, product_name: Staff Box, sku: DEC-028, category: All, stock_on_hand: 0\nproduct_id: 22, product_name: Would Pack, sku: GRO-022, category: All, stock_on_hand: 1\nproduct_id: 29, product_name: Method Box, sku: STE-029, category: None, stock_on_hand: 1\nproduct_id: 15, product_name: A Set, sku: SEA-015, category: All, stock_on_hand: 1\nproduct_id: 2, product_name: Thought Box, sku: GRO-002, category: All, stock_on_hand: 6\nproduct_id: 25, product_name: Him Pack, sku: STE-025, category: All, stock_on_hand: 8\nproduct_id: 7, product_name: Feeling Pack, sku: SEA-007, category: All, stock_on_hand: 10\nproduct_id: 20, product_name: Century Box, sku: DEC-020, category: All, stock_on_hand: 14)",
+    "source_record_count": 8,
+    "response_time_seconds": 15.76
+  },
+  {
+    "question": "what is the top selling product?",
+    "routed_to": "query",
+    "answer": "(Answer generation is temporarily rate-limited. Here's the raw data instead: product_id: 27, product_name: Yet Box, sku: SEA-027, total_units_sold: 360.0, total_revenue: 337993.20\nproduct_id: 15, product_name: A Set, sku: SEA-015, total_units_sold: 299.0, total_revenue: 185101.930000000008\nproduct_id: 9, product_name: Kid Box, sku: STE-009, total_units_sold: 290.0, total_revenue: 1181964.59999999998\nproduct_id: 21, product_name: Out Box, sku: STE-021, total_units_sold: 282.0, total_revenue: 831945.11999999995\nproduct_id: 14, product_name: Size Box, sku: GRO-014, total_units_sold: 253.0, total_revenue: 163367.160000000014)",
+    "source_record_count": 5,
+    "response_time_seconds": 15.98
+  },
+  {
+    "question": "forecast demand for STE-001 next month",
+    "routed_to": "forecasting",
+    "answer": "Based on the last 1 month(s) of sales data for Own Pack (STE-001), the moving-average forecast for next month is approximately 192 units.",
+    "source_record_count": 1,
+    "response_time_seconds": 0.01
+  }
+]

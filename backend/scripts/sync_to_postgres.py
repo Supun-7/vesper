@@ -41,6 +41,12 @@ VENDOR_FIELD_MAP = {
 
 BLANK_PROBABILITY = 0.08  # chance any given field gets blanked out during sync
 
+# these fields are how agents look products/customers up by name/SKU later —
+# blanking them would make a record silently unreachable, which is a data
+# quality problem worth demonstrating separately, not something we want
+# happening at random during a live demo.
+PROTECTED_FIELDS = {"sku_cd", "prod_nm", "cust_full_nm", "vendor_nm"}
+
 
 def rename_and_mess(record, field_map):
     """Apply legacy field renaming and randomly blank a few fields."""
@@ -50,7 +56,7 @@ def rename_and_mess(record, field_map):
         if isinstance(value, list) and len(value) == 2:
             # Odoo many2one fields come back as [id, "display name"] — flatten
             value = value[1]
-        if random.random() < BLANK_PROBABILITY and new_key != "id":
+        if random.random() < BLANK_PROBABILITY and new_key != "id" and new_key not in PROTECTED_FIELDS:
             value = None
         messy[new_key] = value
     return messy

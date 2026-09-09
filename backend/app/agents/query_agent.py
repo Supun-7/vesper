@@ -11,6 +11,7 @@ language answer. The retrieved rows are always returned alongside the answer
 as "source_records" — this is the explainability requirement, never optional.
 """
 import os
+import time
 
 from dotenv import load_dotenv
 from google import genai
@@ -35,7 +36,7 @@ def get_client():
 
 def classify_question(question: str) -> str:
     q = question.lower()
-    if any(kw in q for kw in ["low stock", "low on stock", "running low", "reorder", "out of stock"]):
+    if any(kw in q for kw in ["low stock", "low on stock", "running low", "reorder", "out of stock", "restock", "replenish"]):
         return "low_stock"
     if any(kw in q for kw in ["top sell", "best sell", "top product", "most sold", "selling"]):
         return "top_sellers"
@@ -74,6 +75,22 @@ def retrieve_top_sellers(limit=5):
     return [dict(r) for r in rows]
 
 
+def template_fallback_answer(question_type, records):
+    """A clean, natural-sounding answer built without any LLM call — used when
+    Gemini is rate-limited, so the demo never shows a raw data dump."""
+    if question_type == "low_stock":
+        items = "; ".join(
+            f"{r['product_name']} (SKU {r['sku']}, {r['stock_on_hand']:.0f} units)" for r in records
+        )
+        return f"These products are currently low on stock: {items}."
+    if question_type == "top_sellers":
+        items = "; ".join(
+            f"{r['product_name']} (SKU {r['sku']}, {r['total_units_sold']:.0f} units sold)" for r in records
+        )
+        return f"The top-selling products are: {items}."
+    return "Here is the retrieved data for your question, formatted directly since a summary couldn't be generated right now."
+
+
 def generate_answer(question, question_type, records):
     if not records:
         return "I couldn't find any matching records in the current data to answer that question."
@@ -94,12 +111,16 @@ Data ({question_type}):
 
 Answer:"""
 
-    try:
-        client = get_client()
-        response = client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
-        return response.text.strip()
-    except Exception as e:
-        return f"(LLM answer generation failed: {e}) Raw data: {context}"
+    for attempt in range(2):
+        try:
+            client = get_client()
+            response = client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
+            return response.text.strip()
+        except Exception as e:
+            if "RESOURCE_EXHAUSTED" in str(e) and attempt == 0:
+                time.sleep(15)  # brief backoff, then one retry — free tier quotas reset per minute
+                continue
+            return template_fallback_answer(question_type, records)
 
 
 def answer_question(question: str):
